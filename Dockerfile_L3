@@ -1,0 +1,8 @@
+# Dockerfile_L3
+FROM aksh_pts_l1
+
+WORKDIR /shared_L3
+
+RUN echo "Running additional setup for L3"
+
+CMD ["bash"]

@@ -1,0 +1,8 @@
+# Dockerfile_L5
+FROM aksh_pts_l3
+
+WORKDIR /shared_L5
+
+RUN echo "Running additional setup for L5"
+
+CMD ["bash"]

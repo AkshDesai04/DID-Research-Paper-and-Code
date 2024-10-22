@@ -1,0 +1,23 @@
+# Dockerfile_L1
+FROM ubuntu:20.04
+
+ENV DEBIAN_FRONTEND=noninteractive
+ENV LOG_FILE=/var/log/command_log.txt
+
+RUN apt-get update && \
+    apt-get install -y git php-cli && \
+    git clone https://github.com/phoronix-test-suite/phoronix-test-suite.git /opt/phoronix-test-suite
+
+WORKDIR /opt/phoronix-test-suite
+
+RUN chmod +x phoronix-test-suite && \
+    ./phoronix-test-suite install
+
+RUN echo '#!/bin/bash\nexec "$@" 2>&1 | tee -a $LOG_FILE' > /usr/local/bin/logged_bash && \
+    chmod +x /usr/local/bin/logged_bash
+
+RUN echo 'alias bash="/usr/local/bin/logged_bash /bin/bash"' >> /etc/bash.bashrc
+
+VOLUME ["/shared_L1", "/var/log", "/etc"]
+
+CMD ["/bin/bash"]
